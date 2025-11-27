@@ -1,8 +1,6 @@
-package br.com.Veiculos_Empresarial.repository;
+package repository;
 
-import br.com.Veiculos_Empresarial.database.DatabaseConnection;
-import br.com.Veiculos_Empresarial.model.Manutencao;
-import br.com.Veiculos_Empresarial.model.Veiculo;
+import model.Manutencao;
 
 import java.sql.*;
 import java.text.ParseException;
