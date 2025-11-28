@@ -50,3 +50,34 @@ public class VeiculoRepository {
             }
         }
     }
+
+    public Veiculo buscarPorId(int id, Connection conn) {
+        String sql = "SELECT * FROM veiculos WHERE id = ?";
+
+        if (conn == null) {
+            try (Connection connection = DatabaseConnection.getInstance().getConnection();
+                    PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, id);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return criarVeiculoDoResultSet(rs);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Erro ao procurar veÃ­culo por ID: " + e.getMessage());
+            }
+        } else {
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, id);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return criarVeiculoDoResultSet(rs);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Erro ao procurar veÃ­culo por ID: " + e.getMessage());
+            }
+        }
+        return null;
+    }
