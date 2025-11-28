@@ -81,3 +81,20 @@ public class VeiculoRepository {
         }
         return null;
     }
+     public Veiculo buscarVeiculoPorPlaca(String placa) {
+        String sql = "SELECT * FROM veiculos WHERE placa = ?;";
+        Veiculo veiculo = null;
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, placa);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    veiculo = criarVeiculoDoResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar veÃ­culo por placa: " + e.getMessage());
+        }
+        return veiculo;
+    }
