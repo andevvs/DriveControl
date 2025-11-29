@@ -37,3 +37,55 @@ public class UsuarioRepository {
             }
         }
     }
+
+  public List<Usuario> listarTodosUsuarios() {
+        List<Usuario> usuarios = new ArrayList<>();
+
+        String sql = "SELECT u.id as usuario_id, u.nome, u.user_name, u.senha, u.tipo,u.cargo, u.ativo as usuario_ativo, "
+                +
+                "m.id as motorista_id, m.setor, m.cnh, m.ativo as motorista_ativo " +
+                "FROM usuarios u " +
+                "LEFT JOIN motoristas m ON u.id = m.usuario_id " +
+                "ORDER BY u.tipo ASC, u.nome ASC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()) {
+
+            // Itera sobre TODOS os resultados
+            while (rs.next()) {
+                try {
+                    int usuarioId = rs.getInt("usuario_id");
+                    String nomeDb = rs.getString("nome");
+                    String usernameDb = rs.getString("user_name");
+                    String senhaDb = rs.getString("senha");
+                    String tipoDb = rs.getString("tipo");
+                    String cargoDb = rs.getString("cargo");
+                    boolean usuarioAtivo = rs.getBoolean("usuario_ativo");
+
+                    if ("ADMIN".equals(tipoDb)) {
+                        Administrador admin = new Administrador(usuarioId, nomeDb, usernameDb, senhaDb, usuarioAtivo,
+                                cargoDb);
+                        usuarios.add(admin); // Adiciona na lista Ãºnica
+
+                    } else if ("FUNCIONARIO".equals(tipoDb)) {
+                        int motoristaId = rs.getInt("motorista_id");
+                        String setor = rs.getString("setor");
+                        String cnh = rs.getString("cnh");
+                        boolean motoristaAtivo = rs.getBoolean("motorista_ativo");
+
+                        Motorista motorista = new Motorista(motoristaId, nomeDb, usernameDb, senhaDb, usuarioAtivo,
+                                setor, cnh, usuarioId, motoristaAtivo);
+                        usuarios.add(motorista); // Adiciona na lista Ãºnica
+                    }
+                } catch (Exception e) {
+                    System.err
+                            .println("Erro ao processar usuÃ¡rio ID " + rs.getInt("usuario_id") + ": " + e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar todos os usuÃ¡rios: " + e.getMessage());
+        }
+
+        return usuarios;
+    }
