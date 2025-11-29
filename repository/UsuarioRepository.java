@@ -89,3 +89,56 @@ public class UsuarioRepository {
 
         return usuarios;
     }
+  public Usuario buscarPorUsername(String username) {
+
+        // SQL que faz JOIN para jÃ¡ buscar dados de motorista, se existirem
+        String sql = "SELECT u.id as usuario_id, u.nome, u.user_name, u.senha,u.cargo, u.tipo, u.ativo as usuario_ativo, "
+                +
+                "m.id as motorista_id, m.setor, m.cnh, m.ativo as motorista_ativo " +
+                "FROM usuarios u " +
+                "LEFT JOIN motoristas m ON u.id = m.usuario_id " +
+                "WHERE u.user_name = ?";
+
+        Usuario usuario = null;
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Dados comuns da tabela 'usuarios'
+                    int usuarioId = rs.getInt("usuario_id");
+                    String nomeDb = rs.getString("nome");
+                    String usernameDb = rs.getString("user_name");
+                    String senhaDb = rs.getString("senha");
+                    String tipoDb = rs.getString("tipo");
+                    String cargoDb = rs.getString("cargo");
+                    boolean usuarioAtivo = rs.getBoolean("usuario_ativo");
+
+                    if ("ADMIN".equals(tipoDb)) {
+                        // ConstrÃ³i um Administrador
+                        // (Assume um "cargo" padrÃ£o, jÃ¡ que nÃ£o temos no banco)
+                        usuario = new Administrador(usuarioId, nomeDb, usernameDb, senhaDb, usuarioAtivo, cargoDb);
+
+                    } else if ("FUNCIONARIO".equals(tipoDb)) {
+                        // ConstrÃ³i um Motorista usando os dados do JOIN
+                        int motoristaId = rs.getInt("motorista_id");
+                        String setor = rs.getString("setor");
+                        String cnh = rs.getString("cnh");
+                        boolean motoristaAtivo = rs.getBoolean("motorista_ativo");
+
+                        usuario = new Motorista(motoristaId, nomeDb, usernameDb, senhaDb, usuarioAtivo,
+                                setor, cnh, usuarioId, motoristaAtivo);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar usuÃ¡rio por username: " + e.getMessage());
+        }
+
+        // Retorna a instÃ¢ncia concreta (Admin ou Motorista) ou null
+        return usuario;
+    }
+}
