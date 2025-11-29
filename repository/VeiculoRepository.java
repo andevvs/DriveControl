@@ -98,3 +98,33 @@ public class VeiculoRepository {
         }
         return veiculo;
     }
+
+    private Veiculo criarVeiculoDoResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String placa = rs.getString("placa");
+        String modelo = rs.getString("modelo");
+        String marca = rs.getString("marca");
+        int ano = rs.getInt("ano");
+        String cor = rs.getString("cor");
+        double quilometragemAtual = rs.getDouble("quilometragem");
+        StatusVeiculo status = StatusVeiculo.valueOf(rs.getString("status"));
+
+        Date ultimaDataDeRevisao = null;
+        try {
+            java.sql.Date sqlDate = rs.getDate("ultima_data_revisao");
+            if (sqlDate != null) {
+                ultimaDataDeRevisao = new Date(sqlDate.getTime());
+            }
+        } catch (SQLException e) {
+            try {
+                long timestamp = rs.getLong("ultima_data_revisao");
+                if (!rs.wasNull()) {
+                    ultimaDataDeRevisao = new Date(timestamp);
+                }
+            } catch (SQLException e2) {
+                ultimaDataDeRevisao = null;
+            }
+        }
+
+        return new Veiculo(id, placa, modelo, marca, ano, cor, status, quilometragemAtual, ultimaDataDeRevisao);
+    }
