@@ -166,7 +166,7 @@ public class VeiculoRepository {
             return false;
         }
     }
- public List<Veiculo> findAll() {
+  public List<Veiculo> findAll() {
         String sql = "SELECT * FROM veiculos ORDER BY placa ASC;";
         List<Veiculo> veiculos = new java.util.ArrayList<>();
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -180,4 +180,24 @@ public class VeiculoRepository {
         }
         return veiculos;
     }
+  public List<Veiculo> listarVeiculosDisponiveis() {
+        String sql = "SELECT * FROM veiculos WHERE status = ?;";
+        List<Veiculo> veiculos = new java.util.ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, StatusVeiculo.DISPONIVEL.name());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    veiculos.add(criarVeiculoDoResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar veÃ­culos disponÃ­veis: " + e.getMessage());
+        }
+        return veiculos;
+    }
+}
 
