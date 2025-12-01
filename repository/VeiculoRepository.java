@@ -128,3 +128,29 @@ public class VeiculoRepository {
 
         return new Veiculo(id, placa, modelo, marca, ano, cor, status, quilometragemAtual, ultimaDataDeRevisao);
     }
+   public boolean atualizar(Veiculo veiculo) {
+        String sql = "UPDATE veiculos SET modelo = ?, marca = ?, ano = ?, cor = ?, quilometragem = ?, status = ?, ultima_data_revisao = ? WHERE id = ?;";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, veiculo.getModelo());
+            pstmt.setString(2, veiculo.getMarca());
+            pstmt.setInt(3, veiculo.getAno());
+            pstmt.setString(4, veiculo.getCor());
+            pstmt.setDouble(5, veiculo.getQuilometragemAtual());
+            pstmt.setString(6, veiculo.getStatus().name());
+
+            if (veiculo.getUltimaDataDeRevisao() != null) {
+                pstmt.setString(7, sdf.format(veiculo.getUltimaDataDeRevisao()));
+            } else {
+                pstmt.setNull(7, Types.VARCHAR);
+            }
+            pstmt.setInt(8, veiculo.getId());
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar veÃ­culo: " + e.getMessage());
+            return false;
+        }
+    }
