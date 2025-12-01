@@ -154,3 +154,15 @@ public class VeiculoRepository {
             return false;
         }
     }
+   public boolean delete(int id) {
+        String sql = "DELETE FROM veiculos WHERE id = ?;";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar veÃ­culo: " + e.getMessage());
+            return false;
+        }
+    }
