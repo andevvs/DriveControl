@@ -166,3 +166,18 @@ public class VeiculoRepository {
             return false;
         }
     }
+ public List<Veiculo> findAll() {
+        String sql = "SELECT * FROM veiculos ORDER BY placa ASC;";
+        List<Veiculo> veiculos = new java.util.ArrayList<>();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                veiculos.add(criarVeiculoDoResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar veÃ­culos: " + e.getMessage());
+        }
+        return veiculos;
+    }
+
