@@ -48,4 +48,20 @@ public class UsuarioService {
     public List<Usuario> listarTodosUsuarios() {
         return usuarioRepository.listarTodosUsuarios();
     }
+    public void cadastrarMotorista(String nome, String username, String senha, String setor, String cnh) {
+        motortistaService.cadastrarMotorista(nome, username, senha, setor, cnh);
+    }
+
+    public void editarMotorista(String novoNome, String novoUsername, String novaSenha, String novoSetor, String cnh) {
+        motortistaService.atualizarDadosDeMotorista(cnh, novoNome, novoSetor, novoUsername, novaSenha);
+    }
+
+    public List<Motorista> listarMotoristas() {
+        List<Motorista> listaMotoristas = motortistaService.listarTodosMotoristas();
+        return listaMotoristas;
+    }
+
+    public void excluirMotorista(String cnhParaRemover) {
+        motortistaService.excluirMotorista(cnhParaRemover);
+    }
 }
