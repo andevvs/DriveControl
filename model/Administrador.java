@@ -1,6 +1,6 @@
 package model;
 
-import Main;
+import app.Main;
 import java.util.Scanner;
 
 public class Administrador extends Usuario {
