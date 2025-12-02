@@ -376,3 +376,16 @@ public class RegistroUsoRepository {
         }
         return false;
     }
+  public boolean excluir(int id) {
+        String sql = "DELETE FROM registros_uso WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir registro de uso: " + e.getMessage());
+            return false;
+        }
+    }
+
