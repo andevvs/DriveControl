@@ -74,6 +74,96 @@ public class DatabaseConnection {
         }
     }
     
+    //Cria as tabelas necessárias no banco de dados
+    private void createTables() {
+        try (Statement stmt = connection.createStatement()) {
+            
+            // Tabela de usuários
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS usuarios (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome TEXT NOT NULL,
+                    user_name TEXT UNIQUE NOT NULL,
+                    senha TEXT NOT NULL,
+                    tipo TEXT NOT NULL CHECK (tipo IN ('ADMIN', 'FUNCIONARIO')),
+                    cargo TEXT,
+                    ativo BOOLEAN DEFAULT TRUE,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """);
+            
+            // Tabela de motoristas
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS motoristas (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    setor TEXT NOT NULL,
+                    cnh TEXT UNIQUE NOT NULL,
+                    usuario_id INTEGER NOT NULL,
+                    ativo BOOLEAN DEFAULT TRUE,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+                )
+            """);
+            
+            // Tabela de veículos
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS veiculos (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    placa TEXT UNIQUE NOT NULL,
+                    modelo TEXT NOT NULL,
+                    marca TEXT NOT NULL,
+                    ano INTEGER NOT NULL,
+                    cor TEXT,
+                    quilometragem REAL DEFAULT 0,
+                    status TEXT NOT NULL DEFAULT 'DISPONIVEL' CHECK (status IN ('DISPONIVEL', 'EM_USO', 'MANUTENCAO', 'INDISPONIVEL')),
+                    ultima_data_revisao TEXT,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """);
+            
+            // Tabela de registros de uso
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS registros_uso (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    veiculo_id INTEGER NOT NULL,
+                    motorista_id INTEGER NOT NULL,
+                    usuario_id INTEGER NOT NULL,
+                    data_inicio TEXT NOT NULL,
+                    data_fim TEXT,
+                    quilometragem_inicial REAL NOT NULL,
+                    quilometragem_final REAL,
+                    destino_ou_finalidade TEXT NOT NULL,
+                    FOREIGN KEY (veiculo_id) REFERENCES veiculos(id),
+                    FOREIGN KEY (motorista_id) REFERENCES motoristas(id),
+                    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+                )
+            """);
+            
+            // Tabela de manutenções
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS manutencoes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    veiculo_id INTEGER NOT NULL,
+                    data_inicio TEXT NOT NULL,
+                    data_saida_prevista TEXT,
+                    data_saida_real TEXT,
+                    descricao_servico TEXT NOT NULL,
+                    custo_previsto REAL DEFAULT 0,
+                    custo_real REAL,
+                    nome_oficina TEXT,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (veiculo_id) REFERENCES veiculos(id)
+                )
+            """);
+            
+            System.out.println("Tabelas criadas/verificadas com sucesso!");
+            
+        } catch (SQLException e) {
+            System.err.println("Erro ao criar tabelas: " + e.getMessage());
+            throw new RuntimeException("Erro ao criar estrutura do banco de dados", e);
+        }
+    }
+    
     /**
      * Fecha a conexão com o banco de dados
      */
