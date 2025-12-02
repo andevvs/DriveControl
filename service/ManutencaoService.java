@@ -105,3 +105,5 @@ public class ManutencaoService {
                 return manutencaoRepository.listarTodos();
             }
         }
+    }
+}
