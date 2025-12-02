@@ -342,3 +342,21 @@ public class RegistroUsoRepository {
         }
         return false;
     }
+  public boolean existsByMotoristaId(int motoristaId) {
+        // Este mÃ©todo verifica o 'motorista_id' (ID da tabela motorista), nÃ£o o
+        // 'usuario_id'
+        String sql = "SELECT COUNT(*) FROM registros_uso WHERE motorista_id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, motoristaId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao verificar existÃªncia de registros de uso para motorista ID " + motoristaId
+                    + ": " + e.getMessage());
+        }
+        return false;
+    }
