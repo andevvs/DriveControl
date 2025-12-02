@@ -552,5 +552,17 @@ public class RegistroUsoRepository {
         }
         return false;
     }
-
-
+    
+   // Classe auxiliar interna para facilitar a leitura do banco
+    private static class DadosRegistro {
+        int id;
+        int veiculoId;
+        int motoristaUsuarioId;
+        double quilometragemInicial;
+        double quilometragemFinal;
+        String destinoOuFinalidade;
+        Date dataHoraSaida;
+        Date dataHoraRetorno;
+    }
+}
+   
