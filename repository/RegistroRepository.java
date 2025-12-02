@@ -462,3 +462,75 @@ public class RegistroUsoRepository {
         return registros;
     }
 
+  public List<RegistroUso> buscarPorVeiculoId(int veiculoId) {
+        String sql = "SELECT * FROM registros_uso WHERE veiculo_id = ? ORDER BY data_inicio DESC";
+        List<RegistroUso> registros = new ArrayList<>();
+        List<DadosRegistro> dadosExtraidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, veiculoId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    DadosRegistro dados = new DadosRegistro();
+                    dados.id = rs.getInt("id");
+                    dados.veiculoId = rs.getInt("veiculo_id");
+                    dados.motoristaUsuarioId = rs.getInt("usuario_id");
+                    dados.quilometragemInicial = rs.getDouble("quilometragem_inicial");
+                    dados.quilometragemFinal = rs.getDouble("quilometragem_final");
+                    dados.destinoOuFinalidade = rs.getString("destino_ou_finalidade");
+
+                    try {
+                        if (rs.getString("data_inicio") != null)
+                            dados.dataHoraSaida = sdf.parse(rs.getString("data_inicio"));
+                        if (rs.getString("data_fim") != null)
+                            dados.dataHoraRetorno = sdf.parse(rs.getString("data_fim"));
+                    } catch (ParseException e) {
+                        System.err.println("Erro ao converter data do registro ID " + dados.id + ": " + e.getMessage());
+                    }
+                    dadosExtraidos.add(dados);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar registros por veÃ­culo ID " + veiculoId + ": " + e.getMessage());
+            return registros;
+        }
+
+        for (DadosRegistro dados : dadosExtraidos) {
+            try {
+                Veiculo veiculo = veiculoRepository.buscarPorId(dados.veiculoId, null);
+                Motorista motorista = motoristaRepository.buscarPorId(dados.motoristaUsuarioId);
+                Usuario usuario = (motorista != null) ? motorista.getUsuario() : null;
+
+                if (veiculo != null && motorista != null && usuario != null) {
+                    RegistroUso registro = new RegistroUso(dados.id, veiculo, motorista, usuario, dados.dataHoraSaida,
+                            dados.dataHoraRetorno, dados.quilometragemInicial, dados.quilometragemFinal,
+                            dados.destinoOuFinalidade);
+                    registros.add(registro);
+                } else {
+                    System.err.println(" Registro Ã³rfÃ£o ID " + dados.id + ": criando objetos substitutos");
+                    if (veiculo == null) {
+                        veiculo = new Veiculo(dados.veiculoId, "PLACA_AUSENTE", "MODELO_AUSENTE", "MARCA_AUSENTE", 2000,
+                                "COR_AUSENTE",
+                                StatusVeiculo.DISPONIVEL, 0.0, null);
+                    }
+                    if (motorista == null || usuario == null) {
+                        motorista = new Motorista(dados.motoristaUsuarioId, "MOTORISTA_AUSENTE", "usuario_ausente",
+                                "senha", true,
+                                "SETOR_AUSENTE", "CNH_AUSENTE", dados.motoristaUsuarioId, true);
+                        usuario = motorista;
+                    }
+                    RegistroUso registro = new RegistroUso(dados.id, veiculo, motorista, usuario, dados.dataHoraSaida,
+                            dados.dataHoraRetorno, dados.quilometragemInicial, dados.quilometragemFinal,
+                            dados.destinoOuFinalidade);
+                    registros.add(registro);
+                }
+            } catch (Exception e) {
+                System.err.println(" Erro ao processar registro ID " + dados.id + ": " + e.getMessage());
+            }
+        }
+        return registros;
+    }
+
