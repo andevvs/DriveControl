@@ -7,14 +7,14 @@ import repository.ManutencaoRepository;
 import repository.VeiculoRepository;
 
 import java.util.Date;
+import java.util.List;
 
 public class ManutencaoService {
 
     private ManutencaoRepository manutencaoRepository = new ManutencaoRepository();
     private VeiculoRepository veiculoRepository = new VeiculoRepository();
 
-    public boolean iniciarManutencao(String placaVeiculo, String descricaoServico, String nomeOficina,
-                                     Date dataSaidaPrevista, double custoPrevisto) {
+    public boolean iniciarManutencao(String placaVeiculo, String descricaoServico, String nomeOficina, Date dataSaidaPrevista, double custoPrevisto) {
         try {
             Veiculo veiculo = veiculoRepository.buscarVeiculoPorPlaca(placaVeiculo);
             if (veiculo == null) {
@@ -28,8 +28,7 @@ public class ManutencaoService {
                 throw new Exception("Veículo já está em manutenção.");
             }
 
-            Manutencao novaManutencao = new Manutencao(veiculo, descricaoServico, nomeOficina, new Date(),
-                    dataSaidaPrevista, custoPrevisto);
+            Manutencao novaManutencao = new Manutencao(veiculo, descricaoServico, nomeOficina, new Date(), dataSaidaPrevista, custoPrevisto);
 
             manutencaoRepository.salvar(novaManutencao);
 
@@ -77,7 +76,6 @@ public class ManutencaoService {
             System.err.println("Erro ao concluir manutenção: " + e.getMessage());
             return false;
         }
-
         public boolean excluirManutencao (String placaVeiculo){
             try {
                 Veiculo veiculo = veiculoRepository.buscarVeiculoPorPlaca(placaVeiculo);
@@ -101,5 +99,9 @@ public class ManutencaoService {
             } catch (Exception e) {
                 System.err.println("Erro ao excluir manutenção: " + e.getMessage());
                 return false;
+            }
+
+            public List<Manutencao> listarTodas () {
+                return manutencaoRepository.listarTodos();
             }
         }
