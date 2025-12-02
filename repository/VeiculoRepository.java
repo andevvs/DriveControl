@@ -81,6 +81,7 @@ public class VeiculoRepository {
         }
         return null;
     }
+
      public Veiculo buscarVeiculoPorPlaca(String placa) {
         String sql = "SELECT * FROM veiculos WHERE placa = ?;";
         Veiculo veiculo = null;
@@ -128,6 +129,7 @@ public class VeiculoRepository {
 
         return new Veiculo(id, placa, modelo, marca, ano, cor, status, quilometragemAtual, ultimaDataDeRevisao);
     }
+
    public boolean atualizar(Veiculo veiculo) {
         String sql = "UPDATE veiculos SET modelo = ?, marca = ?, ano = ?, cor = ?, quilometragem = ?, status = ?, ultima_data_revisao = ? WHERE id = ?;";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -154,6 +156,7 @@ public class VeiculoRepository {
             return false;
         }
     }
+
    public boolean delete(int id) {
         String sql = "DELETE FROM veiculos WHERE id = ?;";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -166,6 +169,7 @@ public class VeiculoRepository {
             return false;
         }
     }
+
   public List<Veiculo> findAll() {
         String sql = "SELECT * FROM veiculos ORDER BY placa ASC;";
         List<Veiculo> veiculos = new java.util.ArrayList<>();
@@ -180,6 +184,7 @@ public class VeiculoRepository {
         }
         return veiculos;
     }
+
   public List<Veiculo> listarVeiculosDisponiveis() {
         String sql = "SELECT * FROM veiculos WHERE status = ?;";
         List<Veiculo> veiculos = new java.util.ArrayList<>();
