@@ -64,4 +64,42 @@ public class UsuarioService {
     public void excluirMotorista(String cnhParaRemover) {
         motortistaService.excluirMotorista(cnhParaRemover);
     }
+    public boolean adicionarVeiculos(String placa, String modelo, String marca, int ano, String cor,
+                                     double quilometragem) {
+        veiculoService.cadastrarVeiculo(placa, modelo, marca, ano, cor, quilometragem);
+        return true;
+    }
+
+    public void editarVeiculo(String placaParaEditar, String novoModelo, String novaMarca, int novoAno,
+                              String novaCor) {
+        veiculoService.atualizarVeiculo(placaParaEditar, novoModelo, novaMarca, novoAno, novaCor);
+    }
+
+    public void removerVeiculo(String placaParaRemover) {
+        veiculoService.excluirVeiculo(placaParaRemover);
+    }
+
+    public List<Veiculo> listarTodosVeiculos() {
+        return veiculoService.listarVeiculos();
+    }
+
+    public List<Manutencao> listarManutencao() {
+        return manutencaoService.listarTodas();
+    }
+
+    public void iniciarManutencao(String placaVeiculo, String descricaoServico, String nomeOficina,
+                                  Date dataSaidaPrevista, double custoPrevisto) {
+        manutencaoService.iniciarManutencao(placaVeiculo, descricaoServico, nomeOficina, dataSaidaPrevista,
+                custoPrevisto);
+    }
+
+    public void concluirManutencao(String placa, double custoReal) {
+        Date horaSaida = new Date();
+        manutencaoService.concluirManutencao(placa, horaSaida, custoReal);
+    }
+
+    public void excluirManutencao(String placaVeiculo) {
+        manutencaoService.excluirManutencao(placaVeiculo);
+    }
+
 }
