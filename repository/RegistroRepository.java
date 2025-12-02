@@ -533,4 +533,24 @@ public class RegistroUsoRepository {
         }
         return registros;
     }
+   public boolean motoristaTemViagemAtiva(int motoristaUsuarioId) {
+        String sql = "SELECT COUNT(*) FROM registros_uso WHERE usuario_id = ? AND data_fim IS NULL";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, motoristaUsuarioId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(
+                    "Erro ao verificar viagem ativa do motorista ID " + motoristaUsuarioId + ": " + e.getMessage());
+        }
+        return false;
+    }
+
 
