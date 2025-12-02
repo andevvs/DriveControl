@@ -100,6 +100,7 @@ public class RegistroUsoRepository {
             } catch (SQLException e) {
                 System.err.println("Erro ao buscar registro de uso por ID: " + e.getMessage());
             }
+
         } else {
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, id);
@@ -112,6 +113,7 @@ public class RegistroUsoRepository {
                 System.err.println("Erro ao buscar registro de uso por ID: " + e.getMessage());
             }
         }
+
         return registro;
     }
 
@@ -265,6 +267,7 @@ public class RegistroUsoRepository {
                     dadosExtraidos.add(dados);
                 }
             }
+
         } catch (SQLException e) {
             System.err.println("Erro ao listar todos os registros de uso: " + e.getMessage());
             return registros;
@@ -342,6 +345,7 @@ public class RegistroUsoRepository {
         }
         return false;
     }
+
   public boolean existsByMotoristaId(int motoristaId) {
         // Este mÃ©todo verifica o 'motorista_id' (ID da tabela motorista), nÃ£o o
         // 'usuario_id'
@@ -360,6 +364,7 @@ public class RegistroUsoRepository {
         }
         return false;
     }
+
   public boolean existsUnfinishedByVeiculoId(int veiculoId) {
         String sql = "SELECT COUNT(*) FROM registros_uso WHERE veiculo_id = ? AND data_fim IS NULL";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -376,6 +381,7 @@ public class RegistroUsoRepository {
         }
         return false;
     }
+
   public boolean excluir(int id) {
         String sql = "DELETE FROM registros_uso WHERE id = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -388,6 +394,7 @@ public class RegistroUsoRepository {
             return false;
         }
     }
+
   public List<RegistroUso> buscarPorMotoristaId(int motoristaUsuarioId) {
         // Este mÃ©todo espera um 'usuario_id'
         String sql = "SELECT * FROM registros_uso WHERE usuario_id = ? ORDER BY data_inicio DESC";
@@ -493,6 +500,7 @@ public class RegistroUsoRepository {
                     dadosExtraidos.add(dados);
                 }
             }
+
         } catch (SQLException e) {
             System.err.println("Erro ao buscar registros por veÃ­culo ID " + veiculoId + ": " + e.getMessage());
             return registros;
@@ -533,6 +541,7 @@ public class RegistroUsoRepository {
         }
         return registros;
     }
+
    public boolean motoristaTemViagemAtiva(int motoristaUsuarioId) {
         String sql = "SELECT COUNT(*) FROM registros_uso WHERE usuario_id = ? AND data_fim IS NULL";
 
