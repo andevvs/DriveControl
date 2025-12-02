@@ -44,4 +44,36 @@ public class ManutencaoService {
             return false;
         }
     }
+    public boolean concluirManutencao(String placaVeiculo, Date dataSaidaReal, double custoReal) {
+        try {
+            Veiculo veiculo = veiculoRepository.buscarVeiculoPorPlaca(placaVeiculo);
+            if (veiculo == null) {
+                throw new Exception("Veículo com placa " + placaVeiculo + " não encontrado.");
+            }
+
+            if (veiculo.getStatus() != StatusVeiculo.MANUTENCAO) {
+                throw new Exception("O veículo " + placaVeiculo + " não está atualmente em manutenção.");
+            }
+
+            Manutencao manutencao = manutencaoRepository.buscarManutencaoAtivaPorVeiculoId(veiculo.getId());
+            if (manutencao == null) {
+                throw new Exception("Nenhuma manutenção em andamento encontrada para o veículo " + placaVeiculo);
+            }
+
+            manutencao.setDataSaidaReal(dataSaidaReal);
+            manutencao.setCustoReal(custoReal);
+
+            manutencaoRepository.atualizar(manutencao);
+
+            veiculo.setStatus(StatusVeiculo.DISPONIVEL);
+            veiculo.setUltimaDataDeRevisao(dataSaidaReal);
+            veiculoRepository.atualizar(veiculo);
+
+            System.out.println("Manutenção finalizada com sucesso. Veículo " + placaVeiculo + " está disponível.");
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("Erro ao concluir manutenção: " + e.getMessage());
+            return false;
+        }
 }
