@@ -101,5 +101,58 @@ public class UsuarioService {
     public void excluirManutencao(String placaVeiculo) {
         manutencaoService.excluirManutencao(placaVeiculo);
     }
+    public List<RegistroUso> visualizarHistoricoCompleto() {
+        List<RegistroUso> historico = registroUsoService.listarTodosRegistrosUso();
 
+        if (historico.isEmpty()) {
+            System.out.println(" Nenhum registro de viagem encontrado.");
+        } else {
+            System.out.println(" HISTÓRICO COMPLETO DE VIAGENS (" + historico.size() + " registros)");
+            System.out.println("═══════════════════════════════════════════════════════════════");
+        }
+
+        return historico;
+    }
+
+    public List<RegistroUso> visualizarHistoricoPorMotorista(String cnh) {
+        if (cnh == null || cnh.trim().isEmpty()) {
+            System.err.println(" ERRO: CNH é obrigatória para filtrar por motorista.");
+            return new ArrayList<>();
+        }
+
+        List<RegistroUso> historico = registroUsoService.buscarRegistrosPorMotorista(cnh);
+
+        if (historico.isEmpty()) {
+            System.out.println(" Nenhuma viagem encontrada para o motorista com CNH: " + cnh);
+        } else {
+            System.out
+                    .println(" HISTÓRICO DE VIAGENS - MOTORISTA CNH: " + cnh + " (" + historico.size() + " registros)");
+            System.out.println("═══════════════════════════════════════════════════════════════");
+        }
+
+        return historico;
+    }
+
+    public List<RegistroUso> visualizarHistoricoPorVeiculo(String placa) {
+        if (placa == null || placa.trim().isEmpty()) {
+            System.err.println(" ERRO: Placa é obrigatória para filtrar por veículo.");
+            return new ArrayList<>();
+        }
+
+        List<RegistroUso> historico = registroUsoService.buscarRegistros(placa);
+
+        if (historico.isEmpty()) {
+            System.out.println(" Nenhuma viagem encontrada para o veículo com placa: " + placa);
+        } else {
+            System.out.println(
+                    " HISTÓRICO DE VIAGENS - VEÍCULO PLACA: " + placa + " (" + historico.size() + " registros)");
+            System.out.println("═══════════════════════════════════════════════════════════════");
+        }
+
+        return historico;
+    }
+
+    public boolean excluiRegistroUso(int idRegistro) {
+        return registroUsoService.excluirRegistro(idRegistro);
+    }
 }
