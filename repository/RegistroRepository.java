@@ -360,3 +360,19 @@ public class RegistroUsoRepository {
         }
         return false;
     }
+  public boolean existsUnfinishedByVeiculoId(int veiculoId) {
+        String sql = "SELECT COUNT(*) FROM registros_uso WHERE veiculo_id = ? AND data_fim IS NULL";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, veiculoId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao verificar registros de uso nÃ£o finalizados para veÃ­culo ID " + veiculoId + ": "
+                    + e.getMessage());
+        }
+        return false;
+    }
