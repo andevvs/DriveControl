@@ -1,2 +1,2 @@
 # DriveControl
-“Plataforma inteligente para administrar veículos, clientes e vendas de forma rápida, organizada e totalmente integrada.”
+“Sistema corporativo para gestão de frota, controle de viagens e monitoramento de manutenções e uso de Veículos por motoristas.”
