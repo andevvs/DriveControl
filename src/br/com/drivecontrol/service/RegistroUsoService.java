@@ -201,6 +201,28 @@ public class RegistroUsoService {
                 return false;
             }
         }
+            boolean sucesso = registroUsoRepository.excluir(idRegistro);
 
+            if (sucesso) {
+                System.out.println(" Registro de viagem ID " + idRegistro + " excluÃ­do com sucesso.");
+
+                if (registro.getDataHoraRetorno() == null) {
+                    Veiculo veiculo = veiculoRepository.buscarPorId(registro.getVeiculo().getId(), null);
+                    if (veiculo != null) {
+                        veiculo.setStatus(StatusVeiculo.DISPONIVEL);
+                        veiculoRepository.atualizar(veiculo);
+                        System.out.println(" VeÃ­culo " + veiculo.getPlaca() + " liberado (status: DISPONÃVEL).");
+                    }
+                }
+            } else {
+                System.err.println(" Erro ao excluir registro de viagem ID " + idRegistro + ".");
+            }
+
+            return sucesso;
+
+        } catch (Exception e) {
+            System.err.println(" Erro ao excluir registro: " + e.getMessage());
+            return false;
+        }
     }
 }
