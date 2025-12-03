@@ -112,6 +112,16 @@ public class RegistroUsoService {
         return false;
     }
 
+    public double calcularKmRodados(double quilometragemFinal, double kmSaida) {
+        return quilometragemFinal - kmSaida;
+    }
+
+    public List<RegistroUso> listarRegistrosAtivos() {
+        return registroUsoRepository.listarTodosRegistrosUso().stream()
+                .filter(registro -> registro.getDataHoraRetorno() == null)
+                .toList();
+    }
+
     public List<RegistroUso> listarRegistrosFinalizados() {
         return registroUsoRepository.listarTodosRegistrosUso().stream()
                 .filter(registro -> registro.getDataHoraRetorno() != null)
