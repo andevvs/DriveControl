@@ -18,9 +18,6 @@ public class RegistroUsoService {
         this.registroUsoRepository = new RegistroUsoRepository(veiculoRepository, motoristaRepository);
     }
 
-    public boolean motoristaTemViagemAtiva(int motoristaId) {
-        return registroUsoRepository.motoristaTemViagemAtiva(motoristaId);
-    }
 
     public RegistroUso registrarSaida(Veiculo veiculo, Motorista motorista, String destino) {
         validarDadosInicioUso(
@@ -148,6 +145,24 @@ public class RegistroUsoService {
         return registroUsoRepository.buscarPorVeiculoId(veiculo.getId());
     }
 
+    private void validarDadosInicioUso(String placaVeiculo, String cnhMotorista, String destinoOuFinalidade) {
+        if (placaVeiculo == null || placaVeiculo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Placa do veÃ­culo Ã© obrigatÃ³ria");
+        }
 
+        if (cnhMotorista == null || cnhMotorista.trim().isEmpty()) {
+            throw new IllegalArgumentException("CNH do motorista Ã© obrigatÃ³ria");
+        }
+
+        if (destinoOuFinalidade == null || destinoOuFinalidade.trim().isEmpty()) {
+            throw new IllegalArgumentException("Destino ou finalidade Ã© obrigatÃ³rio");
+        }
+    }
+
+    private boolean motoristaEstaUsandoVeiculo(int idMotorista) {
+        return registroUsoRepository.listarTodosRegistrosUso().stream()
+                .anyMatch(registro -> registro.getMotorista().getId() == idMotorista &&
+                        registro.getDataHoraRetorno() == null);
+    }
     }
 }
