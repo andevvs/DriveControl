@@ -18,6 +18,9 @@ public class RegistroUsoService {
         this.registroUsoRepository = new RegistroUsoRepository(veiculoRepository, motoristaRepository);
     }
 
+    public boolean motoristaTemViagemAtiva(int motoristaId) {
+        return registroUsoRepository.motoristaTemViagemAtiva(motoristaId);
+    }
 
     public RegistroUso registrarSaida(Veiculo veiculo, Motorista motorista, String destino) {
         validarDadosInicioUso(
@@ -109,16 +112,6 @@ public class RegistroUsoService {
         return false;
     }
 
-    public double calcularKmRodados(double quilometragemFinal, double kmSaida) {
-        return quilometragemFinal - kmSaida;
-    }
-
-    public List<RegistroUso> listarRegistrosAtivos() {
-        return registroUsoRepository.listarTodosRegistrosUso().stream()
-                .filter(registro -> registro.getDataHoraRetorno() == null)
-                .toList();
-    }
-
     public List<RegistroUso> listarRegistrosFinalizados() {
         return registroUsoRepository.listarTodosRegistrosUso().stream()
                 .filter(registro -> registro.getDataHoraRetorno() != null)
@@ -163,6 +156,31 @@ public class RegistroUsoService {
         return registroUsoRepository.listarTodosRegistrosUso().stream()
                 .anyMatch(registro -> registro.getMotorista().getId() == idMotorista &&
                         registro.getDataHoraRetorno() == null);
+    }
+
+    private String calcularDuracaoUso(RegistroUso registro) {
+        if (registro.getDataHoraRetorno() == null) {
+            return "Em andamento";
+        }
+
+        long duracaoMs = registro.getDataHoraRetorno().getTime() -
+                registro.getDataHoraSaida().getTime();
+
+        long segundos = duracaoMs / 1000;
+        long minutos = segundos / 60;
+        long horas = minutos / 60;
+
+        if (horas > 0) {
+            return horas + "h " + (minutos % 60) + "min";
+        } else if (minutos > 0) {
+            return minutos + "min " + (segundos % 60) + "s";
+        } else {
+            return segundos + "s";
+        }
+    }
+
+    public List<RegistroUso> listarTodosRegistrosUso() {
+        return registroUsoRepository.listarTodosRegistrosUso();
     }
     }
 }
