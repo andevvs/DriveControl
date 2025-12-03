@@ -192,5 +192,15 @@ public class RegistroUsoService {
     public List<RegistroUso> listarTodosRegistrosUso() {
         return registroUsoRepository.listarTodosRegistrosUso();
     }
+
+    public boolean excluirRegistro(int idRegistro) {
+        try {
+            RegistroUso registro = registroUsoRepository.buscarPorId(idRegistro, null);
+            if (registro == null) {
+                System.err.println(" Registro com ID " + idRegistro + " nÃ£o encontrado.");
+                return false;
+            }
+        }
+
     }
 }
