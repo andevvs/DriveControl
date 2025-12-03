@@ -229,5 +229,7 @@ public class VeiculoService {
         if (novaQuilometragem < quilometragemAtual) {
             throw new IllegalArgumentException("Nova quilometragem nÃ£o pode ser menor que a atual");
         }
+
+        /// asa
     }
 }
