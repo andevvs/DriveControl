@@ -189,4 +189,42 @@ public class MotoristaService {
 
         return null;
     }
+
+    private void validarDadosMotorista(String nome, String userName, String senha, String setor, String cnh) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome é obrigatório");
+        }
+
+        if (userName == null || userName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username é obrigatório");
+        }
+
+        if (userName.length() < 3) {
+            throw new IllegalArgumentException("Username deve ter pelo menos 3 caracteres");
+        }
+
+        if (senha == null || senha.trim().isEmpty()) {
+            throw new IllegalArgumentException("Senha é obrigatória");
+        }
+
+        if (senha.length() < 4) {
+            throw new IllegalArgumentException("Senha deve ter pelo menos 4 caracteres");
+        }
+
+        if (setor == null || setor.trim().isEmpty()) {
+            throw new IllegalArgumentException("Setor é obrigatório");
+        }
+
+        if (cnh == null || cnh.trim().isEmpty()) {
+            throw new IllegalArgumentException("CNH é obrigatória");
+        }
+
+        if (cnh.length() != 11) {
+            throw new IllegalArgumentException("CNH deve ter 11 dígitos");
+        }
+
+        if (!cnh.matches("\\d{11}")) {
+            throw new IllegalArgumentException("CNH deve conter apenas números");
+        }
+    }
 }
