@@ -229,4 +229,111 @@ public class Main {
         } while (opcao != 0);
     }
 
-    
+    // ==================================================================================
+    // SUB-MENUS DE GESTÃO (ADMINISTRADOR)
+    // ==================================================================================
+
+    private static void menuGerenciamentoDeMotorista(Scanner input) {
+        int opcao;
+        do {
+            limparTela();
+            imprimirCabecalho("GESTÃO DE MOTORISTAS");
+            System.out.println("  [1] Cadastrar Novo Motorista");
+            System.out.println("  [2] Editar Dados de Motorista");
+            System.out.println("  [3] Listar Todos os Motoristas");
+            System.out.println("  [4] Remover Motorista");
+            System.out.println("  [0] Voltar ao Menu Anterior");
+
+            opcao = lerInteiro("Opção", input);
+
+            if (opcao == 1) {
+                imprimirCabecalho("NOVO MOTORISTA");
+                String nome = lerTextoObrigatorio("Nome", input);
+                String user = lerTextoObrigatorio("Username", input);
+                String pass = lerTextoObrigatorio("Senha", input);
+                String setor = lerTextoObrigatorio("Setor", input);
+                String cnh = lerTextoObrigatorio("CNH (11 dígitos)", input);
+
+                usuarioService.cadastrarMotorista(nome, user, pass, setor, cnh);
+                esperarEnter(input);
+
+            } else if (opcao == 2) {
+                String buscaCnh = lerTextoObrigatorio("Digite a CNH do motorista para editar", input);
+                // Aqui poderíamos buscar o motorista antes para mostrar os dados atuais
+                System.out.println(">> Insira os novos dados:");
+                String nome = lerTextoObrigatorio("Novo Nome", input);
+                String user = lerTextoObrigatorio("Novo Username", input);
+                String pass = lerTextoObrigatorio("Nova Senha", input);
+                String setor = lerTextoObrigatorio("Novo Setor", input);
+
+                usuarioService.editarMotorista(nome, user, pass, setor, buscaCnh);
+                esperarEnter(input);
+
+            } else if (opcao == 3) {
+                listarMotoristasFormatado();
+                esperarEnter(input);
+
+            } else if (opcao == 4) {
+                String cnh = lerTextoObrigatorio("CNH do Motorista a remover", input);
+                if(confirmarAcao("Tem certeza que deseja excluir este motorista?", input)) {
+                    usuarioService.excluirMotorista(cnh);
+                }
+                esperarEnter(input);
+
+            } else if (opcao != 0) {
+                imprimirErro("Opção inválida.");
+            }
+        } while (opcao != 0);
+    }
+
+    private static void menuGerenciamentoVeiculos(Scanner input) {
+        int opcao;
+        do {
+            limparTela();
+            imprimirCabecalho("GESTÃO DE VEÍCULOS");
+            System.out.println("  [1] Cadastrar Veículo");
+            System.out.println("  [2] Editar Veículo");
+            System.out.println("  [3] Remover Veículo");
+            System.out.println("  [4] Listar Toda a Frota");
+            System.out.println("  [0] Voltar");
+
+            opcao = lerInteiro("Opção", input);
+
+            switch (opcao) {
+                case 1:
+                    imprimirCabecalho("NOVO VEÍCULO");
+                    String placa = lerTextoObrigatorio("Placa", input);
+                    String modelo = lerTextoObrigatorio("Modelo", input);
+                    String marca = lerTextoObrigatorio("Marca", input);
+                    int ano = lerInteiro("Ano Fabricação", input);
+                    String cor = lerTextoObrigatorio("Cor", input);
+                    double km = lerDouble("Quilometragem Inicial", input);
+
+                    if(usuarioService.adicionarVeiculos(placa, modelo, marca, ano, cor, km)) {
+                        imprimirSucesso("Veículo cadastrado na frota!");
+                    }
+                    break;
+                case 2:
+                    String buscaPlaca = lerTextoObrigatorio("Placa do veículo para editar", input);
+                    String novoModelo = lerTextoObrigatorio("Novo Modelo", input);
+                    String novaMarca = lerTextoObrigatorio("Nova Marca", input);
+                    int novoAno = lerInteiro("Novo Ano", input);
+                    String novaCor = lerTextoObrigatorio("Nova Cor", input);
+
+                    usuarioService.editarVeiculo(buscaPlaca, novoModelo, novaMarca, novoAno, novaCor);
+                    break;
+                case 3:
+                    String placaDel = lerTextoObrigatorio("Placa do veículo a remover", input);
+                    if(confirmarAcao("Remover veículo permanentemente?", input)) {
+                        usuarioService.removerVeiculo(placaDel);
+                    }
+                    break;
+                case 4:
+                    listarFrotaCompleta();
+                    break;
+                case 0: break;
+                default: imprimirErro("Opção inválida.");
+            }
+            if(opcao != 0) esperarEnter(input);
+        } while (opcao != 0);
+    }
