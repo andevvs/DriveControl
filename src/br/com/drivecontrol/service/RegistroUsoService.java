@@ -30,7 +30,7 @@ public class RegistroUsoService {
         motoristaEstaUsandoVeiculo(motorista.getId());
         try {
             if (registroUsoRepository.motoristaTemViagemAtiva(motorista.getId())) {
-                System.err.println(" ERRO: O motorista " + motorista.getNome() + " jÃ¡ possui uma viagem em andamento!");
+                System.err.println(" ERRO: O motorista " + motorista.getNome() + " já possui uma viagem em andamento!");
                 System.err.println(" Finalize a viagem atual antes de iniciar uma nova.");
                 return null;
             }
@@ -40,12 +40,12 @@ public class RegistroUsoService {
 
             registroUsoRepository.salvar(novoRegistro);
 
-            System.out.println("SERVICE (RegistroUso): SaÃ­da registrada com sucesso. ID: " + novoRegistro.getId());
+            System.out.println("SERVICE (RegistroUso): Saída registrada com sucesso. ID: " + novoRegistro.getId());
 
             return novoRegistro;
 
         } catch (Exception e) {
-            System.err.println(" Erro no serviÃ§o ao registrar saÃ­da: " + e.getMessage());
+            System.err.println(" Erro no serviço ao registrar saída: " + e.getMessage());
             return null;
         }
     }
@@ -54,18 +54,18 @@ public class RegistroUsoService {
         try {
             RegistroUso registro = registroUsoRepository.buscarPorIdRobusto(idRegistro);
             if (registro == null) {
-                System.err.println(" Registro com ID " + idRegistro + " nÃ£o encontrado");
+                System.err.println(" Registro com ID " + idRegistro + " não encontrado");
                 return false;
             }
 
             if (registro.getDataHoraRetorno() != null) {
-                System.err.println(" Registro jÃ¡ foi finalizado anteriormente");
+                System.err.println(" Registro já foi finalizado anteriormente");
                 return false;
             }
 
             if (quilometragemFinal < registro.getKmSaida()) {
                 System.err.println(" Quilometragem final (" + quilometragemFinal
-                        + ") nÃ£o pode ser menor que a inicial (" + registro.getKmSaida() + ")");
+                        + ") não pode ser menor que a inicial (" + registro.getKmSaida() + ")");
                 return false;
             }
 
@@ -78,7 +78,7 @@ public class RegistroUsoService {
                 try {
                     Veiculo veiculo = registro.getVeiculo();
                     if (veiculo != null && !veiculo.getPlaca().equals("PLACA_AUSENTE")) {
-                        // Busca o veÃ­culo real do banco
+                        // Busca o veículo real do banco
                         Veiculo veiculoReal = veiculoRepository.buscarPorId(veiculo.getId(), null);
                         if (veiculoReal != null) {
                             veiculoReal.setQuilometragemAtual(quilometragemFinal);
@@ -87,26 +87,26 @@ public class RegistroUsoService {
 
                             double kmRodados = calcularKmRodados(quilometragemFinal, registro.getKmSaida());
 
-                            System.out.println(" Uso do veÃ­culo finalizado com sucesso!");
+                            System.out.println(" Uso do veículo finalizado com sucesso!");
                             System.out.println("   Registro ID: " + idRegistro);
-                            System.out.println("   VeÃ­culo: " + veiculoReal.getPlaca());
+                            System.out.println("   Veículo: " + veiculoReal.getPlaca());
                             System.out.println("   KM rodados: " + kmRodados + " km");
-                            System.out.println("   DuraÃ§Ã£o: " + calcularDuracaoUso(registro));
+                            System.out.println("   Duração: " + calcularDuracaoUso(registro));
                         } else {
-                            System.out.println(" Registro finalizado! (VeÃ­culo nÃ£o encontrado no sistema)");
+                            System.out.println(" Registro finalizado! (Veículo não encontrado no sistema)");
                         }
                     } else {
-                        System.out.println(" Registro Ã³rfÃ£o finalizado com sucesso!");
+                        System.out.println(" Registro órfão finalizado com sucesso!");
                     }
                 } catch (Exception e) {
-                    System.out.println(" Registro finalizado! (Erro ao atualizar veÃ­culo: " + e.getMessage() + ")");
+                    System.out.println(" Registro finalizado! (Erro ao atualizar veículo: " + e.getMessage() + ")");
                 }
 
                 return true;
             }
 
         } catch (Exception e) {
-            System.err.println(" Erro ao finalizar uso do veÃ­culo: " + e.getMessage());
+            System.err.println(" Erro ao finalizar uso do veículo: " + e.getMessage());
         }
 
         return false;
@@ -131,7 +131,7 @@ public class RegistroUsoService {
     public List<RegistroUso> buscarRegistrosPorMotorista(String cnhMotorista) {
         Motorista motorista = motoristaRepository.buscarPorCnh(cnhMotorista);
         if (motorista == null) {
-            System.err.println(" Motorista nÃ£o encontrado com CNH: " + cnhMotorista);
+            System.err.println(" Motorista não encontrado com CNH: " + cnhMotorista);
             return new ArrayList<>();
         }
 
@@ -141,7 +141,7 @@ public class RegistroUsoService {
     public List<RegistroUso> buscarRegistros(String placaVeiculo) {
         Veiculo veiculo = veiculoRepository.buscarVeiculoPorPlaca(placaVeiculo);
         if (veiculo == null) {
-            System.err.println(" VeÃ­culo nÃ£o encontrado com placa: " + placaVeiculo);
+            System.err.println(" Veículo não encontrado com placa: " + placaVeiculo);
             return new ArrayList<>();
         }
 
@@ -150,15 +150,15 @@ public class RegistroUsoService {
 
     private void validarDadosInicioUso(String placaVeiculo, String cnhMotorista, String destinoOuFinalidade) {
         if (placaVeiculo == null || placaVeiculo.trim().isEmpty()) {
-            throw new IllegalArgumentException("Placa do veÃ­culo Ã© obrigatÃ³ria");
+            throw new IllegalArgumentException("Placa do veículo é obrigatória");
         }
 
         if (cnhMotorista == null || cnhMotorista.trim().isEmpty()) {
-            throw new IllegalArgumentException("CNH do motorista Ã© obrigatÃ³ria");
+            throw new IllegalArgumentException("CNH do motorista é obrigatória");
         }
 
         if (destinoOuFinalidade == null || destinoOuFinalidade.trim().isEmpty()) {
-            throw new IllegalArgumentException("Destino ou finalidade Ã© obrigatÃ³rio");
+            throw new IllegalArgumentException("Destino ou finalidade é obrigatório");
         }
     }
 
@@ -197,21 +197,21 @@ public class RegistroUsoService {
         try {
             RegistroUso registro = registroUsoRepository.buscarPorId(idRegistro, null);
             if (registro == null) {
-                System.err.println(" Registro com ID " + idRegistro + " nÃ£o encontrado.");
+                System.err.println(" Registro com ID " + idRegistro + " não encontrado.");
                 return false;
             }
-        }
+
             boolean sucesso = registroUsoRepository.excluir(idRegistro);
 
             if (sucesso) {
-                System.out.println(" Registro de viagem ID " + idRegistro + " excluÃ­do com sucesso.");
+                System.out.println(" Registro de viagem ID " + idRegistro + " excluído com sucesso.");
 
                 if (registro.getDataHoraRetorno() == null) {
                     Veiculo veiculo = veiculoRepository.buscarPorId(registro.getVeiculo().getId(), null);
                     if (veiculo != null) {
                         veiculo.setStatus(StatusVeiculo.DISPONIVEL);
                         veiculoRepository.atualizar(veiculo);
-                        System.out.println(" VeÃ­culo " + veiculo.getPlaca() + " liberado (status: DISPONÃVEL).");
+                        System.out.println(" Veículo " + veiculo.getPlaca() + " liberado (status: DISPONÍVEL).");
                     }
                 }
             } else {
