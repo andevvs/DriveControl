@@ -1,9 +1,9 @@
-package br.com.Veiculos_Empresarial.repository;
+package br.com.drivecontrol.repository;
 
-import br.com.Veiculos_Empresarial.model.Usuario;
-import br.com.Veiculos_Empresarial.model.Administrador;
-import br.com.Veiculos_Empresarial.model.Motorista;
-import br.com.Veiculos_Empresarial.database.DatabaseConnection;
+import br.com.drivecontrol.model.Usuario;
+import br.com.drivecontrol.model.Administrador;
+import br.com.drivecontrol.model.Motorista;
+import br.com.drivecontrol.database.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

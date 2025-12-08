@@ -1,7 +1,7 @@
-package br.com.Veiculos_Empresarial.service;
+package br.com.drivecontrol.service;
 
-import br.com.Veiculos_Empresarial.model.*;
-import br.com.Veiculos_Empresarial.repository.*;
+import br.com.drivecontrol.model.*;
+import br.com.drivecontrol.repository.*;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;

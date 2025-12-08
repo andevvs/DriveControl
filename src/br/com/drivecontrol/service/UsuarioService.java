@@ -1,7 +1,7 @@
-package service;
+package br.com.drivecontrol.service;
 
-import repository.UsuarioRepository;
-import model.*;
+import br.com.drivecontrol.repository.UsuarioRepository;
+import br.com.drivecontrol.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

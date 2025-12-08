@@ -1,4 +1,4 @@
-package br.com.Veiculos_Empresarial.database;
+package br.com.drivecontrol.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

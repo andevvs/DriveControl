@@ -1,6 +1,8 @@
-package repository;
+package br.com.drivecontrol.repository;
 
-import model.Manutencao;
+import br.com.drivecontrol.database.DatabaseConnection;
+import br.com.drivecontrol.model.Manutencao;
+import br.com.drivecontrol.model.Veiculo;
 
 import java.sql.*;
 import java.text.ParseException;

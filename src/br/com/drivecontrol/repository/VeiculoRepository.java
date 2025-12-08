@@ -1,8 +1,8 @@
-package br.com.Veiculos_Empresarial.repository;
+package br.com.drivecontrol.repository;
 
-import br.com.Veiculos_Empresarial.model.Veiculo;
-import br.com.Veiculos_Empresarial.database.DatabaseConnection;
-import br.com.Veiculos_Empresarial.model.StatusVeiculo;
+import br.com.drivecontrol.model.Veiculo;
+import br.com.drivecontrol.database.DatabaseConnection;
+import br.com.drivecontrol.model.StatusVeiculo;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;

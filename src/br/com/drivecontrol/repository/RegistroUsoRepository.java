@@ -1,4 +1,11 @@
-package repository;
+package br.com.drivecontrol.repository;
+
+import br.com.drivecontrol.database.DatabaseConnection;
+import br.com.drivecontrol.model.RegistroUso;
+import br.com.drivecontrol.model.Veiculo;
+import br.com.drivecontrol.model.Motorista;
+import br.com.drivecontrol.model.Usuario;
+import br.com.drivecontrol.model.StatusVeiculo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,6 @@
-package model;
+package br.com.drivecontrol.model;
 
-import app.Main;
+import br.com.drivecontrol.app.Main;
 import java.util.Scanner;
 
 public class Administrador extends Usuario {

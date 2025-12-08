@@ -1,10 +1,10 @@
-package service;
+package br.com.drivecontrol.service;
 
-import model.Manutencao;
-import model.StatusVeiculo;
-import model.Veiculo;
-import repository.ManutencaoRepository;
-import repository.VeiculoRepository;
+import br.com.drivecontrol.model.Manutencao;
+import br.com.drivecontrol.model.StatusVeiculo;
+import br.com.drivecontrol.model.Veiculo;
+import br.com.drivecontrol.repository.ManutencaoRepository;
+import br.com.drivecontrol.repository.VeiculoRepository;
 
 import java.util.Date;
 import java.util.List;

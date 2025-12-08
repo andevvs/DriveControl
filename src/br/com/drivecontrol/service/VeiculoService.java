@@ -1,12 +1,12 @@
 package br.com.drivecontrol.service;
 
-import br.com.Veiculos_Empresarial.model.Veiculo;
-import br.com.Veiculos_Empresarial.model.Motorista;
-import br.com.Veiculos_Empresarial.model.RegistroUso;
-import br.com.Veiculos_Empresarial.model.StatusVeiculo;
-import br.com.Veiculos_Empresarial.repository.MotoristaRepository;
-import br.com.Veiculos_Empresarial.repository.RegistroUsoRepository;
-import br.com.Veiculos_Empresarial.repository.VeiculoRepository;
+import br.com.drivecontrol.model.Veiculo;
+import br.com.drivecontrol.model.Motorista;
+import br.com.drivecontrol.model.RegistroUso;
+import br.com.drivecontrol.model.StatusVeiculo;
+import br.com.drivecontrol.repository.MotoristaRepository;
+import br.com.drivecontrol.repository.RegistroUsoRepository;
+import br.com.drivecontrol.repository.VeiculoRepository;
 import java.util.Calendar;
 import java.util.List;
 

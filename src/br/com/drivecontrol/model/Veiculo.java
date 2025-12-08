@@ -1,4 +1,4 @@
-package model;
+package br.com.drivecontrol.model;
 
 import java.util.Date;
 import java.util.Objects;

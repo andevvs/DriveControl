@@ -1,4 +1,4 @@
-package model;
+package br.com.drivecontrol.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
