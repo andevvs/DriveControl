@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com</groupId>
-    <artifactId>Veiculos_Empresarial</artifactId>
+    <artifactId>DriveControl</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Veiculos Empresarial</name>
-    <description>Sistema de gerenciamento de veículos empresariais</description>
+    <name>DriveControl</name>
+    <description>Sistema corporativo para gestão de frota, controle de viagens e monitoramento de manutenções e uso de veículos por motoristas</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -106,7 +106,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>br.com.Veiculos_Empresarial.app.Main</mainClass>
+                            <mainClass>br.com.drivecontrol.app.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -117,7 +117,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>br.com.Veiculos_Empresarial.app.Main</mainClass>
+                    <mainClass>br.com.drivecontrol.app.Main</mainClass>
                 </configuration>
             </plugin>
 
@@ -134,7 +134,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>br.com.Veiculos_Empresarial.app.Main</mainClass>
+                                    <mainClass>br.com.drivecontrol.app.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
