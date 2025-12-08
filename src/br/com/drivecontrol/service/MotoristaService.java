@@ -99,4 +99,34 @@ public class MotoristaService {
 
         return novoRegistro != null;
     }
+    public Motorista buscarMotorista(String cnh) {
+        if (cnh == null || cnh.trim().isEmpty()) {
+            System.err.println(" CNH é obrigatória para busca");
+            return null;
+        }
+
+        Motorista motorista = motoristaRepository.buscarPorCnh(cnh);
+
+        if (motorista == null) {
+            System.err.println(" Motorista com CNH " + cnh + " não encontrado");
+        }
+
+        return motorista;
+    }
+
+    public Motorista buscarMotoristaPorId(int id) {
+        return motoristaRepository.buscarPorId(id);
+    }
+
+    public List<Motorista> listarTodosMotoristas() {
+        List<Motorista> listaMotoristas = motoristaRepository.listarTodos();
+
+        if (listaMotoristas.isEmpty()) {
+            System.out.println(" Nenhum motorista cadastrado no sistema");
+        } else {
+            System.out.println(" Total de motoristas: " + listaMotoristas.size());
+        }
+
+        return listaMotoristas;
+    }
 }
