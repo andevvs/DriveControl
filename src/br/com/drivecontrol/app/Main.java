@@ -68,3 +68,64 @@ public class Main {
         DatabaseConnection.getInstance().closeConnection();
         System.out.println("\nSistema finalizado. Até logo!");
     }
+
+    // ==================================================================================
+    // FUNCIONALIDADES PRINCIPAIS (LOGIN E CADASTRO)
+    // ==================================================================================
+
+    /**
+     * Fluxo de cadastro de um novo Administrador.
+     * Utiliza validadores robustos para impedir campos vazios.
+     */
+    private static void realizarCadastroAdmin(Scanner input) {
+        limparTela();
+        imprimirCabecalho("CADASTRO DE ADMINISTRADOR");
+
+        String nome = lerTextoObrigatorio("Nome Completo", input);
+        String username = lerTextoObrigatorio("Nome de Usuário (Login)", input);
+        String senha = lerTextoObrigatorio("Senha de Acesso", input);
+        String cargo = lerTextoObrigatorio("Cargo (ex: Gerente)", input);
+
+        System.out.println("\nProcessando cadastro...");
+        pausar(500);
+        
+        // Chama o serviço
+        usuarioService.cadastrarAdministrador(nome, username, senha, cargo);
+        
+        esperarEnter(input);
+    }
+
+    /**
+     * Fluxo de autenticação no sistema.
+     * Implementa o Polimorfismo ao direcionar para o menu correto.
+     */
+    private static void realizarLogin(Scanner input) {
+        limparTela();
+        imprimirCabecalho("AUTENTICAÇÃO DO SISTEMA");
+
+        String username = lerTextoObrigatorio("Usuário", input);
+        
+        System.out.print(" >> Senha: ");
+        String senha = input.nextLine(); 
+
+        System.out.println("\nVerificando credenciais...");
+        pausar(800);
+
+        Usuario usuarioLogado = usuarioService.autenticar(username, senha);
+
+        if (usuarioLogado != null) {
+            imprimirSucesso("Login realizado com sucesso! Bem-vindo, " + usuarioLogado.getNome());
+            pausar(1000);
+            
+            // ==========================================================
+            // POLIMORFISMO (O "Teste de Ouro")
+            // O sistema não sabe se é Admin ou Motorista aqui.
+            // O objeto decide qual menu exibir.
+            // ==========================================================
+            usuarioLogado.exibirMenuPrincipal(input);
+            
+        } else {
+            esperarEnter(input);
+        }
+    }
+    
