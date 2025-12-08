@@ -336,4 +336,156 @@ public class Main {
             }
             if(opcao != 0) esperarEnter(input);
         } while (opcao != 0);
+
+        private static void menuControleDeManutencao(Scanner input) {
+            int opcao;
+            do {
+                limparTela();
+                imprimirCabecalho("CONTROLE DE MANUTENÇÃO");
+                System.out.println("  [1] Iniciar Manutenção (Enviar p/ Oficina)");
+                System.out.println("  [2] Finalizar Manutenção (Receber da Oficina)");
+                System.out.println("  [3] Listar Histórico de Manutenções");
+                System.out.println("  [4] Cancelar/Excluir Manutenção");
+                System.out.println("  [0] Voltar");
+
+                opcao = lerInteiro("Opção", input);
+
+                switch(opcao) {
+                    case 1:
+                        String placa = lerTextoObrigatorio("Placa do Veículo", input);
+                        String desc = lerTextoObrigatorio("Descrição do Serviço", input);
+                        String oficina = lerTextoObrigatorio("Nome da Oficina", input);
+                        double custoPrev = lerDouble("Custo Previsto (R$)", input);
+                        LocalDate dataPrev = lerData("Previsão de Saída (dd/MM/yyyy)", input);
+
+                        usuarioService.iniciarManutencao(placa, desc, oficina, java.sql.Date.valueOf(dataPrev), custoPrev);
+                        break;
+                    case 2:
+                        String placaFim = lerTextoObrigatorio("Placa do Veículo", input);
+                        double custoReal = lerDouble("Custo Final Real (R$)", input);
+                        usuarioService.concluirManutencao(placaFim, custoReal);
+                        break;
+                    case 3:
+                        listarManutencoesFormatado();
+                        break;
+                    case 4:
+                        String placaDel = lerTextoObrigatorio("Placa do Veículo em Manutenção", input);
+                        usuarioService.excluirManutencao(placaDel);
+                        break;
+                    case 0: break;
+                    default: imprimirErro("Opção inválida.");
+                }
+                if(opcao != 0) esperarEnter(input);
+            } while(opcao != 0);
+        }
+
+        private static void menuHistoricoViagens(Scanner input) {
+            int opcao;
+            do {
+                limparTela();
+                imprimirCabecalho("AUDITORIA DE VIAGENS");
+                System.out.println("  [1] Histórico Completo");
+                System.out.println("  [2] Filtrar por Veículo");
+                System.out.println("  [3] Filtrar por Motorista");
+                System.out.println("  [4] Excluir Registro (Correção)");
+                System.out.println("  [0] Voltar");
+
+                opcao = lerInteiro("Opção", input);
+
+                switch(opcao) {
+                    case 1:
+                        imprimirCabecalho("HISTÓRICO GERAL");
+                        listarHistorico(usuarioService.visualizarHistoricoCompleto());
+                        break;
+                    case 2:
+                        String placa = lerTextoObrigatorio("Digite a Placa", input);
+                        listarHistorico(usuarioService.visualizarHistoricoPorVeiculo(placa));
+                        break;
+                    case 3:
+                        String cnh = lerTextoObrigatorio("Digite a CNH", input);
+                        listarHistorico(usuarioService.visualizarHistoricoPorMotorista(cnh));
+                        break;
+                    case 4:
+                        int idReg = lerInteiro("ID do Registro para excluir", input);
+                        if(confirmarAcao("Isso apagará o registro de viagem. Confirma?", input)) {
+                            if(usuarioService.excluiRegistroUso(idReg)) {
+                                imprimirSucesso("Registro excluído.");
+                            } else {
+                                imprimirErro("Falha ao excluir. Verifique o ID.");
+                            }
+                        }
+                        break;
+                    case 0: break;
+                    default: imprimirErro("Opção inválida.");
+                }
+                if(opcao != 0) esperarEnter(input);
+            } while(opcao != 0);
+        }
+
+        // ==================================================================================
+        // MÉTODOS DE SUPORTE ÀS FUNCIONALIDADES (FLUXOS)
+        // ==================================================================================
+
+        private static void fluxoIniciarViagem(Motorista motorista, Scanner input) {
+            imprimirCabecalho("NOVA VIAGEM");
+            String placa = lerTextoObrigatorio("Placa do Veículo", input);
+            String destino = lerTextoObrigatorio("Destino ou Finalidade", input);
+
+            System.out.println("Solicitando liberação do veículo...");
+            pausar(500);
+            motoristaService.iniciarViagem(motorista, placa, destino);
+        }
+
+        private static void fluxoFinalizarViagem(Scanner input) {
+            imprimirCabecalho("FINALIZAR VIAGEM");
+            int idRegistro = lerInteiro("ID do Registro de Uso", input);
+            double kmFinal = lerDouble("Quilometragem no Painel (Chegada)", input);
+
+            System.out.println("Processando devolução...");
+            pausar(500);
+
+            if (registroUsoService.finalizarUsoVeiculo(idRegistro, kmFinal)) {
+                imprimirSucesso("Veículo devolvido e quilometragem atualizada!");
+            } else {
+                imprimirErro("Não foi possível finalizar. Verifique ID e KM.");
+            }
+        }
+
+        private static void listarMotoristasFormatado() {
+            imprimirCabecalho("LISTA DE MOTORISTAS");
+            List<Motorista> lista = usuarioService.listarMotoristas();
+
+            if (lista.isEmpty()) {
+                imprimirAviso("Nenhum motorista encontrado.");
+                return;
+            }
+
+            System.out.printf(" %-5s | %-20s | %-15s | %-15s | %s\n", "ID", "NOME", "CNH", "SETOR", "USERNAME");
+            System.out.println(" ──────────────────────────────────────────────────────────────────────────");
+            for(Motorista m : lista) {
+                System.out.printf(" %-5d | %-20s | %-15s | %-15s | %s\n",
+                        m.getUsuarioId(), m.getNome(), m.getCnh(), m.getSetor(), m.getUsername());
+            }
+            System.out.println(" ──────────────────────────────────────────────────────────────────────────");
+        }
+
+        private static void listarFrotaCompleta() {
+            imprimirCabecalho("FROTA DE VEÍCULOS");
+            List<Veiculo> frota = usuarioService.listarTodosVeiculos();
+
+            // Ordena por placa (usando lambda)
+            frota.sort((v1, v2) -> v1.getPlaca().compareTo(v2.getPlaca()));
+
+            if (frota.isEmpty()) {
+                imprimirAviso("Nenhum veículo cadastrado.");
+                return;
+            }
+
+            for (Veiculo v : frota) {
+                System.out.printf(" >> [%s] %s %s (%d)\n", v.getStatus(), v.getMarca(), v.getModelo(), v.getAno());
+                System.out.printf("    Placa: %s | KM: %.1f\n", v.getPlaca(), v.getQuilometragemAtual());
+                System.out.println("    ────────────────────────────────");
+            }
+        }
+
     }
