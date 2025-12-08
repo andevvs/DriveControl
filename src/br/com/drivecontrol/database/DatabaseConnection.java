@@ -9,7 +9,7 @@ public class DatabaseConnection {
     
     private static DatabaseConnection instance;
     private Connection connection;
-    private static final String DATABASE_URL = "jdbc:sqlite:veiculos_empresarial.db";
+    private static final String DATABASE_URL = "jdbc:sqlite:drivecontrol.db";
     
     private DatabaseConnection() {
         try {
