@@ -129,4 +129,22 @@ public class MotoristaService {
 
         return listaMotoristas;
     }
+    public void excluirMotorista(String cnh) {
+        Motorista motorista = motoristaRepository.buscarPorCnh(cnh);
+        if (motorista == null) {
+            System.err.println("ERRO: Motorista com CNH " + cnh + " não encontrado.");
+            return;
+        }
+
+        boolean temRegistros = registroUsoRepository.existsByMotoristaId(motorista.getId());
+
+        if (temRegistros) {
+            System.err.println("ERRO: O motorista '" + motorista.getNome()
+                    + "' não pode ser excluído, pois possui registros de uso associados.");
+            return;
+        }
+
+        System.out.println("SERVICE: Motorista pode ser excluído. Solicitando remoção ao repositório...");
+        motoristaRepository.remover(cnh);
+    }
 }
