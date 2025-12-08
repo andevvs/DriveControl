@@ -147,4 +147,46 @@ public class MotoristaService {
         System.out.println("SERVICE: Motorista pode ser excluído. Solicitando remoção ao repositório...");
         motoristaRepository.remover(cnh);
     }
+    public boolean motoristaEstaAtivo(String cnh) {
+        Motorista motorista = buscarMotorista(cnh);
+        return motorista != null && motorista.isAtivo();
+    }
+
+    public Motorista validarLoginMotorista(String userName, String senha) {
+        try {
+            if (userName == null || userName.trim().isEmpty()) {
+                throw new IllegalArgumentException("Username é obrigatório");
+            }
+
+            if (senha == null || senha.trim().isEmpty()) {
+                throw new IllegalArgumentException("Senha é obrigatória");
+            }
+
+            List<Motorista> motoristas = motoristaRepository.listarTodos();
+
+            for (Motorista motorista : motoristas) {
+                if (userName.equals(motorista.getUsername()) && senha.equals(motorista.getSenha())) {
+                    if (!motorista.isAtivo()) {
+                        System.err.println(" Motorista está desativado");
+                        return null;
+                    }
+
+                    System.out.println(" Login de motorista realizado com sucesso!");
+                    System.out.println("   Bem-vindo, " + motorista.getNome() + "!");
+                    System.out.println("   CNH: " + motorista.getCnh());
+                    System.out.println("   Setor: " + motorista.getSetor());
+
+                    return motorista;
+                }
+            }
+
+            System.err.println(" Credenciais inválidas");
+            return null;
+
+        } catch (Exception e) {
+            System.err.println(" Erro no login do motorista: " + e.getMessage());
+        }
+
+        return null;
+    }
 }
