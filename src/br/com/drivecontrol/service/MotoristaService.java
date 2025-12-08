@@ -48,4 +48,37 @@ public class MotoristaService {
 
         return false;
     }
+    public boolean atualizarDadosDeMotorista(String cnhDoMotorista, String novoNome, String novoSetor,
+                                             String novoUsername, String novaSenha) {
+        try {
+            Motorista motoristaParaAtualizar = motoristaRepository.buscarPorCnh(cnhDoMotorista);
+
+            if (motoristaParaAtualizar == null) {
+                System.err
+                        .println(" ERRO: Motorista com CNH " + cnhDoMotorista + " não encontrado. Atualização falhou");
+                return false;
+            }
+
+            validarDadosMotorista(novoNome, novoUsername, novaSenha, novoSetor, cnhDoMotorista);
+
+            System.out.println("Dados antigos: " + motoristaParaAtualizar);
+
+            motoristaParaAtualizar.setNome(novoNome);
+            motoristaParaAtualizar.setUsername(novoUsername);
+            motoristaParaAtualizar.setSetor(novoSetor);
+            motoristaParaAtualizar.setSenha(novaSenha);
+
+            System.out.println("Dados novos: " + motoristaParaAtualizar);
+
+            motoristaRepository.atualizar(motoristaParaAtualizar);
+
+            System.out.println(" Motorista atualizado com sucesso!");
+            return true;
+
+        } catch (Exception e) {
+            System.err.println(" Erro ao atualizar motorista: " + e.getMessage());
+        }
+
+        return false;
+    }
 }
