@@ -128,4 +128,105 @@ public class Main {
             esperarEnter(input);
         }
     }
+
+    // ==================================================================================
+    // MENUS POLIMÓRFICOS (CHAMADOS PELAS CLASSES MODELO)
+    // ==================================================================================
+
+    /**
+     * Exibe o painel de controle completo para Administradores.
+     * Permite gerenciar todas as entidades do sistema.
+     * * @param admin O objeto Administrador logado.
+     * @param input Scanner para entrada de dados.
+     */
+    public static void menuAdmin(Administrador admin, Scanner input) {
+        int opcao;
+        do {
+            limparTela();
+            imprimirCabecalho("PAINEL DO ADMINISTRADOR");
+            System.out.println(" Usuário: " + admin.getNome() + " | Cargo: " + admin.getCargo());
+            System.out.println("──────────────────────────────────────────────────────────────────");
+            
+            System.out.println("  [1] Gestão de Motoristas");
+            System.out.println("  [2] Gestão de Veículos");
+            System.out.println("  [3] Controle de Manutenção");
+            System.out.println("  [4] Auditoria de Viagens (Histórico)");
+            System.out.println("  [5] Relatório Geral de Usuários");
+            System.out.println("  [0] Sair (Logout)");
+            
+            opcao = lerInteiro("Selecione uma opção", input);
+
+            switch (opcao) {
+                case 1:
+                    menuGerenciamentoDeMotorista(input);
+                    break;
+                case 2:
+                    menuGerenciamentoVeiculos(input);
+                    break;
+                case 3:
+                    menuControleDeManutencao(input);
+                    break;
+                case 4:
+                    menuHistoricoViagens(input);
+                    break;
+                case 5:
+                    listarTodosUsuarios();
+                    esperarEnter(input);
+                    break;
+                case 0:
+                    imprimirAviso("Realizando logout...");
+                    pausar(800);
+                    break;
+                default:
+                    imprimirErro("Opção inválida.");
+                    break;
+            }
+        } while (opcao != 0);
+    }
+
+    /**
+     * Exibe o painel operacional para Motoristas.
+     * Focado em registro de uso de veículos.
+     * * @param motorista O objeto Motorista logado.
+     * @param input Scanner para entrada de dados.
+     */
+    public static void menuMotorista(Motorista motorista, Scanner input) {
+        int opcao;
+        do {
+            limparTela();
+            imprimirCabecalho("ÁREA DO MOTORISTA");
+            System.out.println(" Bem-vindo, " + motorista.getNome());
+            System.out.println(" CNH: " + motorista.getCnh() + " | Setor: " + motorista.getSetor());
+            System.out.println("──────────────────────────────────────────────────────────────────");
+            
+            System.out.println("  [1] Consultar Veículos Disponíveis");
+            System.out.println("  [2] Iniciar Nova Viagem");
+            System.out.println("  [3] Finalizar Viagem Atual");
+            System.out.println("  [0] Sair (Logout)");
+            
+            opcao = lerInteiro("Selecione uma ação", input);
+
+            switch (opcao) {
+                case 1:
+                    listarVeiculosDisponiveis();
+                    break;
+                case 2:
+                    fluxoIniciarViagem(motorista, input);
+                    break;
+                case 3:
+                    fluxoFinalizarViagem(input);
+                    break;
+                case 0:
+                    imprimirAviso("Até logo, " + motorista.getNome() + "!");
+                    pausar(800);
+                    break;
+                default:
+                    imprimirErro("Opção inválida.");
+                    break;
+            }
+            if (opcao != 0) esperarEnter(input);
+            
+        } while (opcao != 0);
+    }
+
     
