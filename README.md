@@ -71,14 +71,6 @@ O sistema permite o controle total sobre os ativos de transporte de uma empresa,
 
 ---
 
-
-## 📊 Diagrama de Classes (UML)
-
-<img width="1211" height="711" alt="diagram" src="https://github.com/user-attachments/assets/bd4bea7f-be00-4adb-9218-dc25e86d219f" />
-
-
----
-
 ## 🛠 Tecnologias Utilizadas
 
 * **Linguagem:** Java (JDK 17+)
@@ -169,10 +161,10 @@ src
 
 4.  Execute o programa:
     ```bash
-    java -jar target/Veiculos_Empresarial-1.0.0.jar
+    java -jar target/drivecontrol.jar
     ```
     
-5.  O programa iniciará no seu terminal. O banco de dados `veiculos_empresarial.db` será criado automaticamente na raiz do projeto na primeira execução.
+5.  O programa iniciará no seu terminal. O banco de dados `drivecontrol.db` será criado automaticamente na raiz do projeto na primeira execução.
 
 ---
 <br>
