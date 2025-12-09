@@ -174,34 +174,43 @@ src
 <table>
   <tr>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/106102036?v=4" width="130"><br>
-      <b>marcelohdev</b>
+      <img src="https://avatars.githubusercontent.com/u/106102036?v=4" width="100"><br>
+      <b>marcelohdev
+         2023011357</b>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/150745935?v=4" width="130"><br>
-      <b>andevvs</b>
+      <img src="https://avatars.githubusercontent.com/u/150745935?v=4" width="100"><br>
+      <b>andevvs
+         2023022919</b>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/147336900?v=4" width="130"><br>
-      <b>Jacksonrs</b>
+      <img src="https://avatars.githubusercontent.com/u/147336900?v=4" width="100"><br>
+      <b>Jacksonrs
+         2023011455</b>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/166414190?v=4" width="130"><br>
-      <b>Ruanpabloband</b>
+      <img src="https://avatars.githubusercontent.com/u/166414190?v=4" width="100"><br>
+      <b>Ruanpabloband
+          2023022946</b>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/209040049?v=4" width="130"><br>
-      <b>Juanpablouf</b>
+      <img src="https://avatars.githubusercontent.com/u/209040049?v=4" width="100"><br>
+      <b>Juanpablouf
+         2024010213</b>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/166559737?v=4" width="130"><br>
-      <b>FabioHenriqued</b>
+      <img src="https://avatars.githubusercontent.com/u/166559737?v=4" width="100"><br>
+      <b>FabioHenriqued
+          2023022690</b>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/179767589?v=4" width="130"><br>
-      <b>DaviFreita</b>
+      <img src="https://avatars.githubusercontent.com/u/179767589?v=4" width="100"><br>
+      <b>DaviFreita
+         2024010350</b>
     </td>
   </tr>
 </table>
+
+<img width=100% src="https://capsule-render.vercel.app/api?type=blur&height=300&color=0b427a&section=footer&descAlign=100&descAlignY=78"/>
 
 
