@@ -757,3 +757,115 @@ public class Main {
         String resposta = input.nextLine();
         return resposta.trim().equalsIgnoreCase("S");
     }
+    // ==================================================================================
+    // VALIDADORES DE ENTRADA (INPUT HELPERS) - SEGURANÇA CONTRA CRASH
+    // ==================================================================================
+
+    /**
+     * Lê uma string e garante que ela não seja vazia ou apenas espaços.
+     * @param mensagem Label do campo.
+     * @param input Scanner.
+     * @return String válida.
+     */
+    public static String lerTextoObrigatorio(String mensagem, Scanner input) {
+        String valor;
+        while (true) {
+            System.out.print(" >> " + mensagem + ": ");
+            valor = input.nextLine();
+            if (!valor.trim().isEmpty()) {
+                return valor;
+            }
+            imprimirErro("Este campo é obrigatório. Por favor, preencha.");
+        }
+    }
+
+    /**
+     * Lê um número inteiro de forma segura, tratando InputMismatchException.
+     * @param mensagem Label do campo.
+     * @param input Scanner.
+     * @return int válido.
+     */
+    public static int lerInteiro(String mensagem, Scanner input) {
+        while (true) {
+            try {
+                System.out.print(" >> " + mensagem + ": ");
+                return Integer.parseInt(input.nextLine());
+            } catch (NumberFormatException e) {
+                imprimirErro("Por favor, digite apenas números inteiros.");
+            }
+        }
+    }
+
+    /**
+     * Lê um número decimal de forma segura.
+     * @param mensagem Label do campo.
+     * @param input Scanner.
+     * @return double válido.
+     */
+    public static double lerDouble(String mensagem, Scanner input) {
+        while (true) {
+            try {
+                System.out.print(" >> " + mensagem + ": ");
+                // Substitui vírgula por ponto para aceitar padrão brasileiro
+                String entrada = input.nextLine().replace(",", ".");
+                return Double.parseDouble(entrada);
+            } catch (NumberFormatException e) {
+                imprimirErro("Por favor, digite um número válido (ex: 150.50).");
+            }
+        }
+    }
+
+    /**
+     * Lê uma data no formato dd/MM/yyyy e converte para LocalDate.
+     * @param mensagem Label do campo.
+     * @param input Scanner.
+     * @return LocalDate válida.
+     */
+    public static LocalDate lerData(String mensagem, Scanner input) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        while (true) {
+            try {
+                System.out.print(" >> " + mensagem + ": ");
+                String entrada = input.nextLine();
+                return LocalDate.parse(entrada, formatter);
+            } catch (DateTimeParseException e) {
+                imprimirErro("Data inválida. Use o formato dia/mês/ano (ex: 25/12/2025).");
+            }
+        }
+    }
+
+    // ==================================================================================
+    // FORMATADORES DE DADOS
+    // ==================================================================================
+
+    public static String formatarRegistroDetalhado(RegistroUso registro) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" ID: ").append(registro.getId()).append("\n");
+        sb.append(" Motorista: ").append(registro.getMotorista().getNome())
+                .append(" (CNH: ").append(registro.getMotorista().getCnh()).append(")\n");
+        sb.append(" Veículo: ").append(registro.getVeiculo().getPlaca())
+                .append(" - ").append(registro.getVeiculo().getMarca())
+                .append(" ").append(registro.getVeiculo().getModelo()).append("\n");
+        sb.append(" Destino: ").append(registro.getDestinoOuFinalidade()).append("\n");
+
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        if (registro.getDataHoraSaida() != null) {
+            sb.append(" Saída: ").append(sdf.format(registro.getDataHoraSaida())).append("\n");
+        }
+
+        if (registro.getDataHoraRetorno() != null) {
+            sb.append(" Retorno: ").append(sdf.format(registro.getDataHoraRetorno())).append("\n");
+            sb.append(" Km Inicial: ").append(registro.getKmSaida())
+                    .append(" | Km Final: ").append(registro.getKmRetorno()).append("\n");
+            sb.append(" Distância: ").append(String.format("%.1f km", registro.getKmRetorno() - registro.getKmSaida()))
+                    .append("\n");
+            sb.append(" Status: [FINALIZADA]");
+        } else {
+            sb.append(" Km Inicial: ").append(registro.getKmSaida()).append("\n");
+            sb.append(" Status: [EM ANDAMENTO] >> Aguardando devolução");
+        }
+
+        return sb.toString();
+    }
+}
