@@ -489,3 +489,271 @@ public class Main {
         }
 
     }
+
+    private static void listarVeiculosDisponiveis() {
+        imprimirCabecalho("VEÃCULOS DISPONÃVEIS");
+        List<Veiculo> disponiveis = veiculoService.listarVeiculosDisponiveis();
+
+        if (disponiveis.isEmpty()) {
+            imprimirAviso("Nenhum veÃ­culo disponÃ­vel no pÃ¡tio.");
+            return;
+        }
+
+        for (Veiculo v : disponiveis) {
+            System.out.printf(" + %s - %s %s (KM: %.0f)\n", v.getPlaca(), v.getMarca(), v.getModelo(), v.getQuilometragemAtual());
+        }
+    }
+
+    private static void listarManutencoesFormatado() {
+        imprimirCabecalho("MANUTENÃÃES");
+        List<Manutencao> lista = usuarioService.listarManutencao();
+
+        if (lista.isEmpty()) {
+            imprimirAviso("Nenhum registro de manutenÃ§Ã£o.");
+            return;
+        }
+
+        for (Manutencao m : lista) {
+            System.out.println(m); // Usa o toString() formatado da classe
+            System.out.println(" ââââââââââââââââââââââââââââââââââââââââââââââââââ");
+        }
+    }
+
+    private static void listarTodosUsuarios() {
+        imprimirCabecalho("LISTAGEM GERAL DE USUÃRIOS");
+        List<Usuario> usuarios = usuarioService.listarTodosUsuarios();
+
+        if (usuarios.isEmpty()) {
+            imprimirAviso("Base de dados vazia.");
+            return;
+        }
+
+        for (Usuario u : usuarios) {
+            System.out.println(u.getDetalhes()); // Detalhes de Admin ou Motorista
+        }
+        System.out.println(" ââââââââââââââââââââââââââââââââââââââââââââââââââ");
+    }
+
+    private static void listarHistorico(List<RegistroUso> registros) {
+        if (registros.isEmpty()) {
+            imprimirAviso("Nenhum registro encontrado para este filtro.");
+            return;
+        }
+        for (RegistroUso r : registros) {
+            System.out.println(formatarRegistroDetalhado(r));
+            System.out.println(" ââââââââââââââââââââââââââââââââââââââââââââââââââ");
+        }
+    }
+
+    // ==================================================================================
+    //                     UTILITÃRIOS DE INTERFACE (UI HELPERS)
+    // ==================================================================================
+
+    /**
+     * Imprime um cabeÃ§alho estilizado com bordas duplas.
+     * Centraliza o texto automaticamente.
+     * @param titulo O texto a ser exibido no centro.
+     */
+    public static void imprimirCabecalho(String titulo) {
+        System.out.println("\nââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ");
+        int larguraTotal = 66;
+        int espacos = (larguraTotal - titulo.length()) / 2;
+        System.out.print("â");
+        for (int i = 0; i < espacos; i++) System.out.print(" ");
+        System.out.print(titulo);
+        for (int i = 0; i < espacos; i++) System.out.print(" ");
+        if (titulo.length() % 2 != 0) System.out.print(" ");
+        System.out.println("â");
+        System.out.println("ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ");
+    }
+
+    /**
+     * Exibe o logotipo ASCII do sistema.
+     */
+    public static void imprimirLogo() {
+        System.out.println("  ____       _                ____            _             _ ");
+        System.out.println(" |  _ \\ _ __(_)_   _____     / ___|___  _ __ | |_ _ __ ___ | |");
+        System.out.println(" | | | | '__| \\ \\ / / _ \\   | |   / _ \\| '_ \\| __| '__/ _ \\| |");
+        System.out.println(" | |_| | |  | |\\ V /  __/   | |__| (_) | | | | |_| | | (_) | |");
+        System.out.println(" |____/|_|  |_| \\_/ \\___|    \\____\\___/|_| |_|\\__|_|  \\___/|_|");
+        System.out.println("                                                              ");
+    }
+
+    public static void imprimirSucesso(String mensagem) {
+        System.out.println("\n [!SUCESSO!] " + mensagem);
+    }
+
+    public static void imprimirErro(String mensagem) {
+        System.err.println("\n [!ERRO!] " + mensagem);
+    }
+
+    public static void imprimirAviso(String mensagem) {
+        System.out.println("\n [!AVISO!] " + mensagem);
+    }
+
+    /**
+     * Limpa o console do terminal.
+     * Tenta usar comandos do sistema operacional para uma limpeza real.
+     */
+    public static void limparTela() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            // Fallback: imprime vÃ¡rias linhas se o comando do SO falhar
+            for (int i = 0; i < 50; i++) System.out.println();
+        }
+    }
+
+    public static void pausar(int ms) {
+        try { Thread.sleep(ms); } catch (InterruptedException e) {}
+    }
+
+    public static void esperarEnter(Scanner input) {
+        System.out.println("\n Pressione [ENTER] para continuar...");
+        input.nextLine();
+    }
+
+    public static boolean confirmarAcao(String pergunta, Scanner input) {
+        System.out.print("\n >> " + pergunta + " (S/N): ");
+        String resposta = input.nextLine();
+        return resposta.trim().equalsIgnoreCase("S");
+    }
+
+    private static void listarVeiculosDisponiveis() {
+        imprimirCabecalho("VEÍCULOS DISPONÍVEIS");
+        List<Veiculo> disponiveis = veiculoService.listarVeiculosDisponiveis();
+
+        if (disponiveis.isEmpty()) {
+            imprimirAviso("Nenhum veículo disponível no pátio.");
+            return;
+        }
+
+        for (Veiculo v : disponiveis) {
+            System.out.printf(" + %s - %s %s (KM: %.0f)\n", v.getPlaca(), v.getMarca(), v.getModelo(), v.getQuilometragemAtual());
+        }
+    }
+
+    private static void listarManutencoesFormatado() {
+        imprimirCabecalho("MANUTENÇÕES");
+        List<Manutencao> lista = usuarioService.listarManutencao();
+
+        if (lista.isEmpty()) {
+            imprimirAviso("Nenhum registro de manutenção.");
+            return;
+        }
+
+        for (Manutencao m : lista) {
+            System.out.println(m); // Usa o toString() formatado da classe
+            System.out.println(" ──────────────────────────────────────────────────");
+        }
+    }
+
+    private static void listarTodosUsuarios() {
+        imprimirCabecalho("LISTAGEM GERAL DE USUÁRIOS");
+        List<Usuario> usuarios = usuarioService.listarTodosUsuarios();
+
+        if (usuarios.isEmpty()) {
+            imprimirAviso("Base de dados vazia.");
+            return;
+        }
+
+        for (Usuario u : usuarios) {
+            System.out.println(u.getDetalhes()); // Detalhes de Admin ou Motorista
+        }
+        System.out.println(" ──────────────────────────────────────────────────");
+    }
+
+    private static void listarHistorico(List<RegistroUso> registros) {
+        if (registros.isEmpty()) {
+            imprimirAviso("Nenhum registro encontrado para este filtro.");
+            return;
+        }
+        for (RegistroUso r : registros) {
+            System.out.println(formatarRegistroDetalhado(r));
+            System.out.println(" ──────────────────────────────────────────────────");
+        }
+    }
+
+    // ==================================================================================
+    //                     UTILITÁRIOS DE INTERFACE (UI HELPERS)
+    // ==================================================================================
+
+    /**
+     * Imprime um cabeçalho estilizado com bordas duplas.
+     * Centraliza o texto automaticamente.
+     * @param titulo O texto a ser exibido no centro.
+     */
+    public static void imprimirCabecalho(String titulo) {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════════╗");
+        int larguraTotal = 66;
+        int espacos = (larguraTotal - titulo.length()) / 2;
+        System.out.print("║");
+        for (int i = 0; i < espacos; i++) System.out.print(" ");
+        System.out.print(titulo);
+        for (int i = 0; i < espacos; i++) System.out.print(" ");
+        if (titulo.length() % 2 != 0) System.out.print(" ");
+        System.out.println("║");
+        System.out.println("╚══════════════════════════════════════════════════════════════════╝");
+    }
+
+    /**
+     * Exibe o logotipo ASCII do sistema.
+     */
+    public static void imprimirLogo() {
+        System.out.println("  ____       _                ____            _             _ ");
+        System.out.println(" |  _ \\ _ __(_)_   _____     / ___|___  _ __ | |_ _ __ ___ | |");
+        System.out.println(" | | | | '__| \\ \\ / / _ \\   | |   / _ \\| '_ \\| __| '__/ _ \\| |");
+        System.out.println(" | |_| | |  | |\\ V /  __/   | |__| (_) | | | | |_| | | (_) | |");
+        System.out.println(" |____/|_|  |_| \\_/ \\___|    \\____\\___/|_| |_|\\__|_|  \\___/|_|");
+        System.out.println("                                                              ");
+    }
+
+    public static void imprimirSucesso(String mensagem) {
+        System.out.println("\n [!SUCESSO!] " + mensagem);
+    }
+
+    public static void imprimirErro(String mensagem) {
+        System.err.println("\n [!ERRO!] " + mensagem);
+    }
+
+    public static void imprimirAviso(String mensagem) {
+        System.out.println("\n [!AVISO!] " + mensagem);
+    }
+
+    /**
+     * Limpa o console do terminal.
+     * Tenta usar comandos do sistema operacional para uma limpeza real.
+     */
+    public static void limparTela() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            // Fallback: imprime várias linhas se o comando do SO falhar
+            for (int i = 0; i < 50; i++) System.out.println();
+        }
+    }
+
+    public static void pausar(int ms) {
+        try { Thread.sleep(ms); } catch (InterruptedException e) {}
+    }
+
+    public static void esperarEnter(Scanner input) {
+        System.out.println("\n Pressione [ENTER] para continuar...");
+        input.nextLine();
+    }
+
+    public static boolean confirmarAcao(String pergunta, Scanner input) {
+        System.out.print("\n >> " + pergunta + " (S/N): ");
+        String resposta = input.nextLine();
+        return resposta.trim().equalsIgnoreCase("S");
+    }
