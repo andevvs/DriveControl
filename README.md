@@ -8,20 +8,18 @@
 
 O **DriveControl** é uma aplicação Java desenvolvida como projeto final da disciplina de Programação Orientada a Objetos (POO). O sistema simula o gerenciamento de uma frota empresarial, aplicando rigorosamente os quatro pilares da POO: **Encapsulamento, Herança, Abstração e Polimorfismo**.
 
----
 
 ## 📋 Índice
 
 - [Sobre o Projeto](#-sobre-o-projeto)
+- [Documentação](#-documentação)
 - [Funcionalidades](#-funcionalidades)
 - [Aplicação dos Pilares de POO](#-aplicação-dos-pilares-de-poo)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Como Executar](#-como-executar)
-- [Autores](#-autores)
+- [Como Executar](#como-executar-link)
+- [Autores](#autores-link)
 
-
----
 
 ## 📖 Sobre o Projeto
 
@@ -30,7 +28,13 @@ O sistema permite o controle total sobre os ativos de transporte de uma empresa,
 1.  **Administrador (Gestor):** Responsável pelo cadastro de veículos, gestão de motoristas, controle financeiro de manutenções e auditoria de viagens.
 2.  **Motorista:** Responsável por registrar a retirada e devolução de veículos, alimentando o sistema com dados de quilometragem e disponibilidade.
 
----
+
+
+## 📚 Documentação
+A documentação detalhada das entidades e atributos encontra-se na pasta `doc/`.
+* [📄 Clique aqui para acessar a Documentação Completa (PDF)](doc/Documentação_DriveControl.pdf)
+
+
 
 ## 🚀 Funcionalidades
 
@@ -44,10 +48,10 @@ O sistema permite o controle total sobre os ativos de transporte de uma empresa,
 ### 🚙 Motorista
 * **Login:** Autenticação segura via username e senha.
 * **Consulta de Frota:** Visualização em tempo real de veículos disponíveis.
-* **Registro de Uso:** Início de viagem (Check-out) vinculando motorista ao veículo.
-* **Devolução:** Fim de viagem (Check-in) com atualização automática da quilometragem do veículo.
+* **Registro de Uso:** Início de viagem vinculando motorista ao veículo.
+* **Devolução:** Fim de viagem com atualização automática da quilometragem do veículo.
 
----
+
 
 ## 🧠 Aplicação dos Pilares de POO
 
@@ -69,7 +73,7 @@ O sistema permite o controle total sobre os ativos de transporte de uma empresa,
 - **No Login:** O método de autenticação retorna um objeto do tipo genérico `Usuario`. O sistema chama `usuario.exibirMenuPrincipal()` e a JVM decide, em tempo de execução, se deve abrir o menu do Admin ou do Motorista.
 - **Na Listagem:** Uma única lista `List<Usuario>` é percorrida, e cada objeto exibe seus dados específicos (Cargo ou CNH) sem a necessidade de `if/else` complexos.
 
----
+
 
 ## 🛠 Tecnologias Utilizadas
 
@@ -82,7 +86,7 @@ O sistema permite o controle total sobre os ativos de transporte de uma empresa,
     * Service Layer
     * Layered Architecture
 
----
+
 
 ## 📂 Estrutura do Projeto
 
@@ -123,8 +127,9 @@ src
                 └── VeiculoService.java
 
 ```
----
 
+
+<div id="como-executar-link"></div>
 
 ## ▶️ Como Executar
 
@@ -161,13 +166,14 @@ src
 
 4.  Execute o programa:
     ```bash
-    java -jar target/drivecontrol.jar
+    java -jar target/DriveControl-1.0.0.jar
     ```
     
 5.  O programa iniciará no seu terminal. O banco de dados `drivecontrol.db` será criado automaticamente na raiz do projeto na primeira execução.
 
 ---
-<br>
+
+<div id="autores-link"></div>
 
 ## 👨‍💻 Autores
 
@@ -175,38 +181,61 @@ src
   <tr>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/106102036?v=4" width="100"><br>
-      <b>marcelohdev
-         2023011357</b>
+      <b>        
+      <a href="https://github.com/marcelohdev" target="_blank">marcelohdev</a>
+      </b><br>
+      Marcelo Henrique Messias Cavalcante<br>
+      2023011357
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/150745935?v=4" width="100"><br>
-      <b>andevvs
-         2023022919</b>
+      <b>
+      <a href="https://github.com/andevvs" target="_blank">andevvs</a>
+      </b><br>
+      Andrei Vieira e Silva<br>
+      2023022919
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/147336900?v=4" width="100"><br>
-      <b>Jacksonrs
-         2023011455</b>
+      <b>
+      <a href="https://github.com/Jacksonrs" target="_blank">Jacksonrs</a>   
+      </b><br>
+      Jackson Renan Oliveira dos Santos<br>
+      2023011455
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/166414190?v=4" width="100"><br>
-      <b>Ruanpabloband
-          2023022946</b>
+      <b>
+      <a href="https://github.com/Ruanpabloband" target="_blank">Ruanpabloband</a>   
+      </b><br>
+      Ruan Pablo Bandeira de Oliveira<br>
+      2023022946
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/209040049?v=4" width="100"><br>
-      <b>Juanpablouf
-         2024010213</b>
+      <b>
+      <a href="https://github.com/Juanpablouf" target="_blank">Juanpablouf</a>
+      </b><br>
+      Juan Pablo Silva Valdivino<br>
+      2024010213
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/166559737?v=4" width="100"><br>
-      <b>FabioHenriqued
-          2023022690</b>
+      <b>
+      <a href="https://github.com/FabioHenriqued" target="_blank">FabioHenriqued</a>
+      </b><br>
+      Fabio Henrique Duarte de Oliveira<br>
+      2023022690
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/179767589?v=4" width="100"><br>
-      <b>DaviFreita
-         2024010350</b>
+      <b>
+      <a href="https://github.com/DaviFreita" target="_blank">DaviFreita</a>   
+      </b><br>
+      Davi da Silva Freitas<br>
+      2024010350
     </td>
   </tr>
 </table>
